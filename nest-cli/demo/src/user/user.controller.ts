@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,28 +17,31 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
-
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Query() query) {
+    // 读取前端传来的参数
+    console.log(query);
+    return {
+      code: 200,
+      message: query.name,
+    };
   }
 
+  @Post()
+  create(@Body() body) {
+    console.log(body);
+    return {
+      code: 200,
+      message: body.name,
+    };
+  }
+
+  // 动态参数
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  findOne(@Param() params) {
+    console.log(params);
+    return {
+      code: 200,
+    };
   }
 }
