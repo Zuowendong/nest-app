@@ -25,4 +25,12 @@ export class AppController {
   findAll2() {
     return 'I am new one';
   }
+
+  @Get('findError')
+  @Version([VERSION_NEUTRAL, '1'])
+  findError() {
+    const a: any = {};
+    console.log(a.b.c);
+    return this.appService.getHello();
+  }
 }
